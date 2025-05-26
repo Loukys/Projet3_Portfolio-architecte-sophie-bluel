@@ -16,9 +16,9 @@
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
+			<li><a href="#portfolio">projets</a></li>
+			<li><a href="#contact">contact</a></li>
+			<li><a href="./login.html" id="btnLogin">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -35,8 +35,14 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-	<section id="portfolio">
+	<section id="portfolio">		
 		<h2>Mes Projets</h2>
+		<div id="boutons">
+			<button id="btnTous" class="filtre">Tous</button>
+			<button id="btnObjets" class="filtre">Objets</button>
+			<button id="btnAppart" class="filtre">Appartements</button>
+			<button id="btnHR" class="filtre">Hotels & restaurants</button>
+		</div>
 		<div class="gallery">
 			<!--
 			<figure>

@@ -1,24 +1,16 @@
 /* Récupérer dynamiquement les données des travaux via l’API */
-async function loadProjects() {
-    let projects = window.localStorage.getItem("projects");
+// Appelle les données avec l'API
+let projects = [];
 
-    if (projects === null) {
-        // Récupérer les projects depuis l'API
-        const reponse = await fetch ('http://localhost:5678/api/works');
-        projects = await reponse.json();
-        // Transformer les projects en JSON
-        const projectsValue = JSON.stringify(projects);
-        // Stockage des informations dans le localStorage
-        window.localStorage.setItem("projects", projectsValue);
-    } else {
-        projects = JSON.parse(projects)
-    }
-    generateProjects(projects);
-}
+fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then(data => {
+        projects = data;
+        loadProjects(projects);
+})
 
-
-// Fonction pour générer les projects
-function generateProjects(projects) {
+// Fonction pour générer les projects sur le HTML dans la div "gallery"
+function loadProjects(projects) {
     for (let i = 0; i < projects.length; i++) {
         const article = projects[i];
         // Récupérer les éléments du DOM qui accceuillera les projects
@@ -38,5 +30,52 @@ function generateProjects(projects) {
     }            
 }
 
-// Générer les projects sur le HTML
-loadProjects()
+
+/* Ajouter le tri des projets par catégorie dans la galerie */
+// Fonctionnement du bouton "Tous" 
+const btnTous = document.getElementById("btnTous")
+
+btnTous.addEventListener("click", () => {
+    const projectsFilterAll = projects.filter(project => project);
+    document.querySelector(".gallery").innerHTML = "";
+    loadProjects(projectsFilterAll)
+})
+
+// Fonctionnement du bouton "Objets" 
+const btnObjets = document.getElementById("btnObjets")
+
+btnObjets.addEventListener("click", () => {
+    const projectsFilterObjets = projects.filter(project => project.category.id === 1);
+    document.querySelector(".gallery").innerHTML = "";
+    loadProjects(projectsFilterObjets);
+})
+
+// Fonctionnement du bouton "Appartements" 
+const btnAppart = document.getElementById("btnAppart")
+
+btnAppart.addEventListener("click", () => {
+    const projectsFilterAppart = projects.filter(project => project.category.id === 2);
+    document.querySelector(".gallery").innerHTML = "";
+    loadProjects(projectsFilterAppart);
+})
+
+// Fonctionnement du bouton "Appartements" 
+const btnHR = document.getElementById("btnHR")
+
+btnHR.addEventListener("click", () => {
+    const projectsFilterHR = projects.filter(project => project.category.id === 3);
+    document.querySelector(".gallery").innerHTML = "";
+    loadProjects(projectsFilterHR);
+})
+
+//Gérer l'aspect des boutons de filtre 
+const btnFiltre = document.querySelectorAll(".filtre");
+
+btnFiltre.forEach(bouton => {
+  bouton.addEventListener("click", () => {
+    // Enlève la classe active à tous les boutons
+    btnFiltre.forEach(b => b.classList.remove("bouton-actif"));
+    // Ajoute la classe active au bouton cliqué
+    bouton.classList.add("bouton-actif");
+  })
+})
