@@ -1,23 +1,29 @@
 /* Récupérer dynamiquement les données des travaux via l’API */
 // Appelle les données avec l'API
 let projects = [];
+loadProjects();
+hearClickFilters();
 
-fetch('http://localhost:5678/api/works')
-    .then(response => response.json())
-    .then(data => {
-        projects = data;
-        loadProjects(projects);
-})
+
+// Fonction pour charger les travauix via l'API
+function loadProjects() {
+    fetch('http://localhost:5678/api/works')
+        .then(response => response.json())
+        .then(data => {
+            projects = data;      
+            createProjects();      
+        })
+}
 
 // Fonction pour générer les projects sur le HTML dans la div "gallery"
-function loadProjects(projects) {
+function createProjects() {
     for (let i = 0; i < projects.length; i++) {
         const article = projects[i];
         // Récupérer les éléments du DOM qui accceuillera les projects
         const sectionProjects = document.querySelector(".gallery");
         // Créer une balise pour un project 
         const projectsElement = document.createElement("article");
-        projectsElement.dataset.id = projects[i].id;
+        projectsElement.dataset.category = projects[i].category.id;
         // Créer les balises
         const imageElement = document.createElement("img");
         imageElement.src = article.imageUrl;
@@ -30,52 +36,30 @@ function loadProjects(projects) {
     }            
 }
 
+// Fonction pour faire fonctionner les filtres 
+function filterCategory(categoryId) {
+    const articles = document.querySelectorAll(".gallery article");
+    articles.forEach(article => {
+        const category = article.dataset.category;
+        if (categoryId === "0" || category === categoryId) {
+        article.style.display = "block";
+        } else {
+        article.style.display = "none";
+        }
+    })
+}
 
-/* Ajouter le tri des projets par catégorie dans la galerie */
-// Fonctionnement du bouton "Tous" 
-const btnTous = document.getElementById("btnTous")
+// Fonction pour écouter et activer les filtres et leur aspect
+function hearClickFilters() {
+    const btnFilter = document.querySelectorAll(".filtre");
 
-btnTous.addEventListener("click", () => {
-    const projectsFilterAll = projects.filter(project => project);
-    document.querySelector(".gallery").innerHTML = "";
-    loadProjects(projectsFilterAll)
-})
-
-// Fonctionnement du bouton "Objets" 
-const btnObjets = document.getElementById("btnObjets")
-
-btnObjets.addEventListener("click", () => {
-    const projectsFilterObjets = projects.filter(project => project.category.id === 1);
-    document.querySelector(".gallery").innerHTML = "";
-    loadProjects(projectsFilterObjets);
-})
-
-// Fonctionnement du bouton "Appartements" 
-const btnAppart = document.getElementById("btnAppart")
-
-btnAppart.addEventListener("click", () => {
-    const projectsFilterAppart = projects.filter(project => project.category.id === 2);
-    document.querySelector(".gallery").innerHTML = "";
-    loadProjects(projectsFilterAppart);
-})
-
-// Fonctionnement du bouton "Appartements" 
-const btnHR = document.getElementById("btnHR")
-
-btnHR.addEventListener("click", () => {
-    const projectsFilterHR = projects.filter(project => project.category.id === 3);
-    document.querySelector(".gallery").innerHTML = "";
-    loadProjects(projectsFilterHR);
-})
-
-//Gérer l'aspect des boutons de filtre 
-const btnFiltre = document.querySelectorAll(".filtre");
-
-btnFiltre.forEach(bouton => {
-  bouton.addEventListener("click", () => {
-    // Enlève la classe active à tous les boutons
-    btnFiltre.forEach(b => b.classList.remove("bouton-actif"));
-    // Ajoute la classe active au bouton cliqué
-    bouton.classList.add("bouton-actif");
-  })
-})
+    btnFilter.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            filterCategory(id);
+            // Gérer les styles des filtres
+            btnFilter.forEach(b => b.classList.remove("bouton-actif"));
+            btn.classList.add("bouton-actif");
+        })
+    })
+}

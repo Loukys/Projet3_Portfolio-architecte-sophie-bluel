@@ -36,15 +36,18 @@
 		</article>
 	</section>
 	<section id="portfolio">		
-		<h2>Mes Projets</h2>
+		<div>
+			<h2>Mes Projets</h2>			
+			<button id='adminModif' class="hidden">modifier</button>			
+		</div>
 		<div id="boutons">
-			<button id="btnTous" class="filtre">Tous</button>
-			<button id="btnObjets" class="filtre">Objets</button>
-			<button id="btnAppart" class="filtre">Appartements</button>
-			<button id="btnHR" class="filtre">Hotels & restaurants</button>
+			<button id="btnTous" class="filtre" data-id="0">Tous</button>
+			<button id="btnObjets" class="filtre" data-id="1">Objets</button>
+			<button id="btnAppart" class="filtre" data-id="2">Appartements</button>
+			<button id="btnHR" class="filtre" data-id="3">Hotels & restaurants</button>
 		</div>
 		<div class="gallery">
-			<!--
+			<!-- 
 			<figure>
 				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
 				<figcaption>Abajour Tahina</figcaption>
