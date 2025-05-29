@@ -7,9 +7,10 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src="scripts/script.js" defer></script>
+	<script type="module" src="scripts/main.js" defer></script>
 </head>
 <body>
 <header>
@@ -36,9 +37,10 @@
 		</article>
 	</section>
 	<section id="portfolio">		
-		<div>
+		<div id="modifProjects">
 			<h2>Mes Projets</h2>			
-			<button id='adminModif' class="hidden">modifier</button>			
+			<button id="adminModif" class="hidden"><i class="fa-regular fa-pen-to-square"></i> modifier</button>	
+			<button id="logoutBtn" class="hidden">Déconnexion</button>		
 		</div>
 		<div id="boutons">
 			<button id="btnTous" class="filtre" data-id="0">Tous</button>

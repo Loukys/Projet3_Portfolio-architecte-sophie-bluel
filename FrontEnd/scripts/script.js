@@ -1,18 +1,16 @@
-/* Récupérer dynamiquement les données des travaux via l’API */
-// Appelle les données avec l'API
+//Page des fonctions pour tout le site
 let projects = [];
-loadProjects();
-hearClickFilters();
-
 
 // Fonction pour charger les travauix via l'API
-function loadProjects() {
-    fetch('http://localhost:5678/api/works')
-        .then(response => response.json())
-        .then(data => {
-            projects = data;      
-            createProjects();      
-        })
+export async function loadProjects() {
+    try {
+        const response = await fetch ('http://localhost:5678/api/works');
+        const data = await response.json();
+        projects = data;
+        createProjects();     
+    } catch (error) {
+        console.error("Erreur lors du chargement des projets :", error);
+    }
 }
 
 // Fonction pour générer les projects sur le HTML dans la div "gallery"
@@ -36,21 +34,8 @@ function createProjects() {
     }            
 }
 
-// Fonction pour faire fonctionner les filtres 
-function filterCategory(categoryId) {
-    const articles = document.querySelectorAll(".gallery article");
-    articles.forEach(article => {
-        const category = article.dataset.category;
-        if (categoryId === "0" || category === categoryId) {
-        article.style.display = "block";
-        } else {
-        article.style.display = "none";
-        }
-    })
-}
-
-// Fonction pour écouter et activer les filtres et leur aspect
-function hearClickFilters() {
+// Fonction pour activer les filtres et leur aspect
+export function hearClickFilters() {
     const btnFilter = document.querySelectorAll(".filtre");
 
     btnFilter.forEach(btn => {
@@ -63,3 +48,83 @@ function hearClickFilters() {
         })
     })
 }
+
+// Fonction pour trier les projets en leur appliquant un display "none" s'ils ne sont pas de la catégorie en question
+function filterCategory(categoryId) {
+    const articles = document.querySelectorAll(".gallery article");
+    articles.forEach(article => {
+        const category = article.dataset.category;
+        if (categoryId === "0" || category === categoryId) {
+        article.style.display = "block";
+        } else {
+        article.style.display = "none";
+        }
+    })
+}
+
+// Fonction pour gérer le formulaire pour la connexion
+export function login() {
+    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('errorMsg');
+    
+    try {
+        const response = await fetch('http://localhost:5678/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error("Erreur dans l’identifiant ou le mot de passe");
+        }
+
+        const data = await response.json();
+        
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+            window.location.href = 'index.html';            
+        }
+    }
+    catch(error) {
+        console.error(error);
+        errorMsg.textContent = error.message;
+    }
+})}
+
+// Fonction pour se déconnecter :
+export function logout() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    const adminModif = document.getElementById('adminModif');
+
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+        logoutBtn.classList.add('hidden');
+        adminModif.classList.add('hidden');
+    })
+
+    const isLogged = localStorage.getItem('token') !== null;
+    if (isLogged) {
+        logoutBtn.classList.remove('hidden');
+        adminModif.classList.remove('hidden');
+    } else {
+        logoutBtn.classList.add('hidden');
+        adminModif.classList.add('hidden');
+    }
+}
+
+
+/* Ajouter la modale pour gérer les projets */
+/* Créer une fenêtre modale qui s’ouvre lorsque l’on souhaite modifier la liste des projets. 
+Les projets apparaissent comme indiqué dans le design de Juan. 
+En cliquant sur l’icone de corbeille on peut supprimer un travail */
+
+// Fonction pour ouvrir la modale :
