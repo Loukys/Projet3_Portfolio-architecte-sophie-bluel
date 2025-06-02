@@ -329,3 +329,197 @@ footer nav ul {
 	font-weight: 400;
 	cursor: pointer;
 }
+
+/***** Style pour la modale "Galerie Photo" *****/
+#modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0000004D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 630px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#modal h3 {
+	text-align: center;
+	font-size: 26px;
+	margin: 30px;
+	padding: 10px 0px;
+}
+
+.closeModal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.modalGallery {
+    display: grid;
+	justify-content: center;
+	width: 70%;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+	padding-bottom: 50px;
+	border-bottom: 2px solid rgba(179, 179, 179, 0.5);
+}
+
+.modalItem {
+    width: 80px;
+	height: auto;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.modalItem img {
+    object-fit: cover;
+	width: 100%;
+    height: auto;
+}
+
+.modalItem i.fa-trash-can {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    cursor: pointer;
+    background: black;
+    border-radius: 15%;
+    padding: 5px;
+	font-size: 10px;
+}
+
+#modal .addBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+	margin: 20px auto;
+	margin-top: 35px;
+	width: 237px;
+	height: 36px;
+	border: 0px;
+	border-radius: 60px;	
+	background-color: #1D6154;
+	font-family: 'Syne';
+	font-size: 14px;
+	font-weight: 700;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
+
+/***** Style pour la modale "Ajout photo" *****/
+.backModal {
+    position: absolute;
+    top: 25px;
+    left: 30px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#blockAddImg {
+	background-color: #E8F1F6;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 420px;
+	height: 169px;
+	gap: 5px;
+	margin-bottom: 20px;
+}
+
+#logoImg {
+	font-size: 75px;
+	color: #B9C5CC;
+	text-align: center;
+}
+
+#blockAddImg img {
+	height: 169px;
+}
+
+#btnAddImg {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 35px;
+	height: 36px;
+	border: 0px;
+	border-radius: 60px;	
+	cursor: pointer;
+	background-color: #CBD6DC;
+	color: #306685;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+	margin: 0 auto;
+	width: 173px;
+}
+
+#infoImg {
+	color: #444444;
+	font-family: 'Work Sans';
+	font-size: 10px;
+	font-weight: 400;
+}
+
+#formAddP {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-bottom: 45px;
+	border-bottom: 2px solid rgba(179, 179, 179, 0.5);
+}
+
+.title {
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+	padding-top: 10px;
+}
+
+#modal input {
+	height: 50px;
+	width: 420px;	
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+	padding: 0px 25px;
+	box-sizing: border-box;
+}
+
+#modal select {
+	height: 50px; 
+	width: 420px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+	padding: 0px 20px;
+	box-sizing: border-box;
+}
