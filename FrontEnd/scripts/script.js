@@ -15,7 +15,9 @@ export async function loadProjects() {
 }
 
 // Fonction pour générer les projects au DOM dans la div "gallery"
-function createProjects() {
+function createProjects() {   
+    const sectionProjects = document.querySelector(".gallery");
+    sectionProjects.innerHTML = ''; 
     for (let i = 0; i < projects.length; i++) {
         const article = projects[i];
         // Récupérer les éléments du DOM qui accceuillera les projects
@@ -82,13 +84,13 @@ export function login() {
                 password: password
             })
         })
-
         if (!response.ok) {
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.classList.remove('hidden');
             throw new Error("Erreur dans l’identifiant ou le mot de passe");
         }
 
         const data = await response.json();
-        
         if (data.token) {
             localStorage.setItem('token', data.token);
             window.location.href = 'index.html';            
@@ -100,24 +102,34 @@ export function login() {
     }
 })}
 
-// Fonction pour se déconnecter :
+// Fonction pour se déconnecter (retire le token du local storage) :
 export function logout() {
-    const logoutBtn = document.getElementById('logoutBtn');
-    const adminModif = document.getElementById('adminModif');
-
-    logoutBtn.addEventListener("click", () => {
+    const btnLogout = document.getElementById('btnLogout');
+    btnLogout.addEventListener("click", () => {
         localStorage.removeItem('token');
         window.location.href = 'index.html';
-        logoutBtn.classList.add('hidden');
-        adminModif.classList.add('hidden');
     })
+}
 
-    const isLogged = localStorage.getItem('token') !== null;
-    if (isLogged) {
-        logoutBtn.classList.remove('hidden');
+// Fonction pour faire évoluer le site en fonction du token d'identification présent dans le local storage :
+export function tokenLog() {
+    const btnLogin = document.getElementById('btnLogin');
+    const btnLogout = document.getElementById('btnLogout');    
+    const adminModif = document.getElementById('adminModif');
+    const editBarHidden = document.getElementById('editBarHidden');
+    const btnFilters = document.querySelectorAll('.filtre');
+    const token = localStorage.getItem('token');
+    if(token) {
+        btnLogin.classList.add('hidden');
+        btnLogout.classList.remove('hidden');        
+        btnFilters.forEach(btn => btn.classList.add('hidden'));
+        editBarHidden.classList.remove('hidden');
         adminModif.classList.remove('hidden');
-    } else {
-        logoutBtn.classList.add('hidden');
+    } else {        
+        btnLogin.classList.remove('hidden');
+        btnLogout.classList.add('hidden');
+        btnFilters.forEach(btn => btn.classList.remove('hidden'));
+        editBarHidden.classList.add('hidden');
         adminModif.classList.add('hidden');
     }
 }
@@ -182,16 +194,16 @@ function createModalGP() {
 
             // Supprime du DOM
             if (response.ok) {
-                const projectsElement = document.getElementById("article");
-                projectDiv.remove(); 
-                projectsElement.remove();
+                projectDiv.remove();
+                projects = projects.filter(p => p.id !== project.id);
+                createProjects();
             } else {
                 alert("Échec de la suppression");
             }
         });
     });
 
-    // Fermer la modale
+    // Fermer la modale (faire une fonction car répétition)
     closeButton.addEventListener('click', () => {
         modalOverlay.remove();
     });
@@ -241,7 +253,10 @@ async function createModalAP() {
     const title = document.createElement('h3');
     title.innerHTML = 'Ajout photo';
 
-    const blockAddImg = document.createElement('form');
+    const formAddP = document.createElement('form');
+    formAddP.id = 'formAddP'
+
+    const blockAddImg = document.createElement('div');
     blockAddImg.id = 'blockAddImg';
 
     const logoImg = document.createElement('p');
@@ -269,9 +284,8 @@ async function createModalAP() {
     infoImg.id = 'infoImg';
     infoImg.innerHTML = 'jpg, png : 4mo max';
 
-    const blockForm = document.createElement('form');
-    blockForm.classList.add('form');
-    blockForm.id = 'formAddP';
+    const divTitleCat = document.createElement('div');
+    divTitleCat.id = 'divTitleCat';
 
     const labelTitle = document.createElement('p');
     labelTitle.htmlFor = 'title';
@@ -291,7 +305,7 @@ async function createModalAP() {
     selectCategory.name = 'category'
     selectCategory.id = 'category';
 
-    // Créer les options de l'onglet déroulant
+    // Créer les options de l'onglet déroulant de "Catégorie"
     const defaultOption = document.createElement('option');
     defaultOption.textContent = '';
     selectCategory.appendChild(defaultOption);
@@ -304,7 +318,7 @@ async function createModalAP() {
     // Transcrire chaque catégorie puis lier au parent
     categories.forEach(categorie => {
         const option = document.createElement('option');
-        option.value = categorie.value;
+        option.value = categorie.id;
         option.textContent = categorie.name;
         selectCategory.appendChild(option);
     });
@@ -313,16 +327,16 @@ async function createModalAP() {
     const validateBtn = document.createElement('button');
     validateBtn.type = 'submit';
     validateBtn.classList.add('addBtn');
-    validateBtn.id = 'validateBtn';    
+    validateBtn.id = 'validateBtn';
     validateBtn.innerHTML = 'Valider';
     validateBtn.style.backgroundColor = '#A7A7A7'
 
-    // Bouton fermer la modale
+    // Bouton X pour fermer la modale
     const closeButton = document.createElement('span');
     closeButton.classList.add('closeModal');
     closeButton.innerHTML = '&times;';
     
-    // Fermer la modale
+    // Fermer la modale avec X ou en cliquant sur l'Overlay (faire une fonction car répétition)
     closeButton.addEventListener('click', () => {
         modalOverlay.remove();
     });
@@ -350,17 +364,19 @@ async function createModalAP() {
     blockAddImg.appendChild(inputImg);
     blockAddImg.appendChild(infoImg);
 
-    blockForm.appendChild(labelTitle);
-    blockForm.appendChild(inputTitle);
-    blockForm.appendChild(labelCategory);
-    blockForm.appendChild(selectCategory);
-    blockForm.appendChild(validateBtn);
+    divTitleCat.appendChild(labelTitle);
+    divTitleCat.appendChild(inputTitle);
+    divTitleCat.appendChild(labelCategory);
+    divTitleCat.appendChild(selectCategory);
+    divTitleCat.appendChild(validateBtn);
+
+    formAddP.appendChild(blockAddImg);
+    formAddP.appendChild(divTitleCat);
     
     modal.appendChild(closeButton);
     modal.appendChild(backButton);
     modal.appendChild(title);
-    modal.appendChild(blockAddImg);
-    modal.appendChild(blockForm);
+    modal.appendChild(formAddP);
     
     modalOverlay.appendChild(modal);
     document.body.appendChild(modalOverlay);
@@ -397,37 +413,46 @@ function chooseImg() {
 
 // Fonction pour Valider l'ajout de photo
 async function validAddP() {
-    const image = document.getElementById('input-file').files[0];
-    const title = document.getElementById('title').value;
-    const category = document.getElementById('category').value;
-    const token = localStorage.getItem('token');
-    const validateBtn = document.getElementById('validateBtn');
-
+    
     /*
-    if (image.files.length > 0 && title.value.trim() !== '' && category.value !== '') {
+    if (image.files.length > 0 && title.value !== '' && category.value !== '') {
         validateBtn.style.backgroundColor = '#1D6154';
     } 
     */
 
-    document.getElementById('blockAddImg').addEventListener('submit', async (event) => {
+    const form = document.getElementById('formAddP')
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
+
+        const imageInput = document.getElementById('input-file');
+        const image = imageInput.files[0];
+        const titleInput  = document.getElementById('title');
+        const title = titleInput.value;
+        const categoryInput  = document.getElementById('category');
+        const category = categoryInput.value;
+
+        const token = localStorage.getItem('token');
+
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('title', title);
+        formData.append('category', category);
+
         try {
             const response = await fetch('http://localhost:5678/api/works', {
                 method: 'POST',
-                headers: {
+                headers: {                   
                     'Authorization': `Bearer ${token}`
                 },
-                body: {
-                    image: image,
-                    title: title,
-                    category: category
-                }
-            });
-
+                body: formData
+            });            
             if (response.ok) {
-                alert("Projet ajouté avec succès !");
-                document.getElementById('modalOverlay')?.remove();
-                loadProjects();
+                await loadProjects(); 
+                form.reset();
+                document.getElementById('chosenImg').style.display = 'none';
+                document.getElementById('logoImg').style.display = 'block';
+                document.getElementById('btnAddImg').style.display = 'flex';
+                document.getElementById('infoImg').style.display = 'block';
             } else {
                 alert("Erreur lors de l'envoi du projet.");
             }

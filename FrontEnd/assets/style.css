@@ -3,7 +3,7 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
+body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -30,10 +30,6 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 
-body {
-	line-height: 1;
-}
-
 ol, ul {
 	list-style: none;
 }
@@ -53,23 +49,47 @@ table {
 	border-spacing: 0;
 }
 
+.hidden {
+	display: none !important;
+}
+
 /** end reset css**/
+html {
+	height: 100%;
+  	margin: 0;
+  	padding: 0;
+  	display: flex;
+  	flex-direction: column;
+}
+
 body {
-	max-width: 1140px;
-	margin: auto;
-	font-family: 'Work Sans' ;
+	line-height: 1;
+	min-height: 100vh;
+	font-family: 'Work Sans';
 	font-size: 14px;
 	background-color: #FFFEF8;
+	height: 100%;
+	display: flex;
+  	flex-direction: column;
 }
 
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px auto;
+	max-width: 1440px;
+	width: 1140px;
 }
 
 header img {
 	width: 60%;
+}
+ 
+main {	
+	max-width: 948px;
+	width: 100%;
+	margin: auto;
+	flex: 1;
 }
 
 section {
@@ -82,7 +102,7 @@ h1 {
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
@@ -105,13 +125,22 @@ nav ul {
 }
 
 nav li {
-	padding: 0 10px;
-	font-size: 1.2em;
+	margin: 0 10px;
+	font-size: 16px;
 }
 
 nav li a{
 	all : unset;
 	cursor: pointer;
+}
+
+nav img {
+	width: 50%;
+	height: auto;
+}
+
+#ilLogin {
+	font-weight: bold;
 }
 
 li:hover {
@@ -121,20 +150,23 @@ li:hover {
 #introduction {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;	
+	margin: 0;
+	padding-top: 80px;
+	padding-bottom: 80px;
 }
 
 #introduction figure {
-	flex: 1
+	flex: 0.5;
 }
 
 #introduction img {
-	display: block;
-	margin: auto;
-	width: 80%;
+	width: 100%;
 }
 
 #introduction article {
-	flex: 1
+	flex: 0.43;
+	max-width: 604px;
 }
 
 #introduction h2 {
@@ -160,11 +192,10 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
 }
 
 #contact {
-	width: 50%;
+	width: 40%;
 	margin: auto;
 }
 
@@ -210,13 +241,23 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+footer {
+	margin: auto;
+	max-width: 1440px;
+	width: 100%;
+}
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	background-color: #fff;
-	padding: 20px;
-	width: 100%;
+	padding: 20px 0px;
+}
+
+footer nav ul li {	
+	font-size: 14px;
 	cursor: pointer;
+	margin-right: 100px;
 }
 
 /*** Boutons de filtrage des projets ***/
@@ -248,10 +289,10 @@ footer nav ul {
   color: #fff !important;
 }
 
-
 /*** Page pour le Login ***/
 #login {
-	width: 50%;
+	max-width: 380px;
+	width: 100%;
 	margin: auto;
 }
 
@@ -265,7 +306,7 @@ footer nav ul {
 
 #login form {
 	text-align: left;
-	margin-top:30px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
@@ -294,11 +335,7 @@ footer nav ul {
 
 #login p {
 	margin: auto;
-	padding: 20px;
-}
-
-.hidden {
-	display: none;
+	padding: 0px;
 }
 
 #modifProjects {
@@ -328,6 +365,22 @@ footer nav ul {
 	font-size: 14px;
 	font-weight: 400;
 	cursor: pointer;
+}
+
+/***** Barre mode édition une fois logé *****/
+#editBar {
+	background-color: black;
+	height: 59px;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	font-family: 'Work Sans';
+	font-weight: 400;
+	font-size: 16px;	
+	width: 100vw;
+	margin: auto;
 }
 
 /***** Style pour la modale "Galerie Photo" *****/
@@ -484,7 +537,7 @@ footer nav ul {
 	font-weight: 400;
 }
 
-#formAddP {
+#divTitleCat {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
