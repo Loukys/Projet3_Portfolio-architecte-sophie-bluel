@@ -1,6 +1,6 @@
-# Portfolio-architecte-sophie-bluel
+# Portfolio pour l'architecte Sophie Bluel
 Bonjour et bienvenue sur ce projet !
-Vous trouverez ici tous les éléments qui compose le site web de l'architecte Sophie BLUEL.
+Vous trouverez ici tous les éléments qui composent le site web de l'architecte Sophie BLUEL.
 
 ## Architecture
 Ce repo git contient les 2 briques logicielles du projet 
